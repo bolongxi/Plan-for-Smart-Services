@@ -1,0 +1,87 @@
+<h1>Travel Service</h1>
+<h2>Enter your starting location and destination</h2>
+<br />
+<leaflet id="map" lf-center="startPosition" width="50%" height="40vh"></leaflet>
+<form novalidate="novalidate">
+	<h3>Starting address</h3>
+	<div id="from-address" class="address-input">
+		<p>
+			<label for="from-street">Street address</label>
+			<input id="from-street" type="text"
+				ng-model="trip.fromAddr.street" />
+		</p>
+		<p>
+			<label for="from-city">City</label>
+			<input id="from-city" type="text" ng-model="trip.fromAddr.city" />
+		</p>
+		<p>
+			<label for="from-provice">Province</label>
+			<input id="from-province" type="text"
+				ng-model="trip.fromAddr.province" />
+		</p>
+		<p>
+			<label for="from-country">Country</label>
+			<input id="from-country" type="text"
+				ng-model="trip.fromAddr.country" />
+		</p>
+	</div>
+	<h3>Destination address</h3>
+	<div id="to-address" class="address-input">
+		<p>
+			<label for="to-street">Street address</label>
+			<input id="to-street" type="text"
+				ng-model="trip.toAddr.street" />
+		</p>
+		<p>
+			<label for="to-city">City</label>
+			<input id="to-city" type="text" ng-model="trip.toAddr.city" />
+		</p>
+		<p>
+			<label for="to-provice">Province</label>
+			<input id="to-province" type="text"
+				ng-model="trip.toAddr.province" />
+		</p>
+		<p>
+			<label for="to-country">Country</label>
+			<input id="to-country" type="text" ng-model="trip.toAddr.country" />
+		</p>
+	</div>
+	<br />
+	<label for="fulfillment-date"><strong>Fulfillment Date: </strong></label>
+	<input id="fulfillment-date" type="date" ng-model="trip.date"
+		min="{{ date | date: 'yyyy-MM-dd' }}"
+		ng-change="populateVehicles()" />
+	<h3>Available Vehicles</h3>
+	<p ng-if="!cars.length">Select a date to list available vehicles</p>
+	<table id="available-cars" ng-if="cars.length">
+		<tr id="car-header">
+			<th>Select</th>
+			<th>Model</th>
+			<th>Rate ($/Km)</th>
+		</tr>
+		<tr ng-repeat="car in cars">
+			<td><input id="car-{{ car.id }}" name="car" type="radio"
+				ng-value="car" ng-model="trip.car"
+				ng-change="updateCost()" /></td>
+			<td><label for="car-{{ car.id }}">{{ car.model }}</label></td>
+			<td>${{ car.rate.toFixed(2) }}</td>
+		</tr>
+	</table>
+	<br />
+	
+	<div>
+		<strong>Distance: </strong>
+		<p class="number" ng-if="trip.distance">
+			{{ trip.distance.toFixed(2) }} Km
+		</p>
+		<br />
+		<strong>Total: </strong>
+		<p class="number" ng-if="trip.cost">${{ trip.cost.toFixed(2) }}</p>
+	</div>
+	<br />
+	
+	<input type="button" value="Update" ng-click="updateRoute()" />
+	<input type="submit" value="Add to cart" ng-click="addToCart()"
+		ng-disabled="!routeConfirmed || !trip.car" />
+</form>
+

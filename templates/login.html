@@ -1,0 +1,17 @@
+<h1>Log In</h1>
+<hr />
+<form>
+	<label for="username"><b>Username</b></label>
+	<input id="username" type="text" ng-model="credentials.username"
+		placeholder="Username" required="required" />
+
+	<label for="password"><b>Password</b></label>
+	<input id="password" type="password" ng-model="credentials.password"
+		placeholder="Password" required="required" />
+
+	<input type="submit" ng-click="login(credentials)" value="Login" />
+	<p class="error" ng-if="failed">Username or password are incorrect</p>
+	<br />
+	<br />
+	<a href="#!/signup">Sign up for an account to access our services.</a>
+</form>

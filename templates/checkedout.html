@@ -1,0 +1,21 @@
+<h1>Order Placed</h1>
+<h2>Successfully placed order #{{ orderId }}</h2>
+
+<strong ng-if="!orderId">Invalid or missing order ID</strong>
+
+<form ng-if="orderId && !submitted">
+	<label for="review">Please give us your feedback</label>
+	<div>
+		<div ng-repeat="rating in ratings">
+			<h2>{{ getStarRating(0) }} / {{ getMaxStarRating(0) }}</h2>
+			<div star-rating="star-rating" rating-value="rating.presentV"
+				max="rating.max"
+				on-rating-selected="getSelectedRating(rating)"></div>
+		</div>
+	</div>
+	<textarea id="review" maxlength="65536" rows="10" cols="40"
+		required="required" ng-model="$parent.review"></textarea>
+	<br />
+	<input type="submit" value="Submit" ng-click="submitReview()" />
+</form>
+<p ng-if="submitted">Thank you</p>

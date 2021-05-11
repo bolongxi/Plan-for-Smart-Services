@@ -1,0 +1,77 @@
+<h1>Shopping Cart</h1>
+
+<p ng-if="empty()">Your cart is empty</p>
+
+<div ng-if="cart.products.length">
+	<br />
+	<h2>Products</h2>
+	<table>
+		<tr>
+			<th>Delete</th>
+			<th>Product Description</th>
+			<th>Price</th>
+		</tr>
+		<tr ng-repeat="product in cart.products">
+			<td><button type="button" ng-click="delete('products', product)">
+				Delete
+			</button></td>
+			<td>{{ product.description }}</td>
+			<td>${{ product.price.toFixed(2) }}</td>
+		</tr>
+	</table>
+</div>
+
+<div ng-if="cart.trips.length">
+	<br />
+	<h2>Trips</h2>
+	<table>
+		<tr>
+			<th>Delete</th>
+			<th>From</th>
+			<th>Destination</th>
+            <th>Distance</th>
+            <th>Date</th>
+            <th>Price</th>
+		</tr>
+		<tr ng-repeat="trip in cart.trips">
+			<td><button type="button" ng-click="delete('trips', trip)">
+				Delete
+			</button></td>
+			<td>{{ trip.fromAddr.street }}</td>
+			<td>{{ trip.toAddr.street }}</td>
+			<td>{{ trip.distance.toFixed(2) }} Km</td>
+			<td>{{ trip.date | date: 'yyyy-MM-dd' }}</td>
+			<!--<td>{{ trip.date }}</td>-->
+			<td>${{ trip.cost.toFixed(2) }}</td>
+		</tr>
+	</table>
+</div>
+
+<div ng-if="cart.joyrides.length">
+	<br />
+	<h2>Joy Rides</h2>
+	<table>
+		<tr>
+			<th>Delete</th>
+			<th>Vehicle</th>
+			<th>Driver</th>
+			<th>Distance</th>
+			<th>Price</th>
+		</tr>
+		<tr ng-repeat="ride in cart.joyrides">
+			<td><button type="button" ng-click="delete('joyrides', ride)">
+				Delete
+			</button></td>
+			<td ng-bind="ride.order.vehicle.model"></td>
+			<td ng-bind-template="{{ ride.order.driver.racerName }} ({{ ride.order.driver.country }})"></td>
+			<td ng-bind-template="{{ ride.order.distance }} Km"></td>
+			<td ng-bind-template="${{ ride.cost.toFixed(2) }}"></td>
+		</tr>
+	</table>
+</div>
+
+<div ng-if="!empty()">
+	<br />
+	<p><strong>Total:</strong> ${{ total().toFixed(2) }}</p>
+	<button type="button" ng-click="checkout()">Check Out</button>
+</div>

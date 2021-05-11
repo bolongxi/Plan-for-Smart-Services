@@ -1,0 +1,39 @@
+<h1>Sign Up</h1>
+<p>Please fill in this form to create an account.</p>
+<hr />
+<form style="border:1px solid #ccc">
+	<label for="username"><b>Username: </b></label>
+	<input id="username" ng-model="user.username" type="text"
+		placeholder="Username" required="required" />
+	
+	<label for="firstname"><b>First Name: </b></label>
+	<input id="firstname" ng-model="user.firstname" type="text"
+		placeholder="First Name" required="required" />
+	
+	<label for="lastname"><b>Last Name: </b></label>
+	<input id="lastname" ng-model="user.lastname" type="text"
+		placeholder="Last Name" required="required" />
+	
+	<label for="email"><b>email: </b></label>
+	<input id="email" ng-model="user.email" type="email" required="required"
+		placeholder="email address" />
+	
+	<label for="address"><b>Address: </b></label>
+	<input id="address" ng-model="user.address" type="text" required="required"
+		placeholder="Address" />
+	
+	<label for="phone"><b>Phone Number: </b></label>
+	<input id="phone" ng-model="user.phone" type="tel" required="required"
+		placeholder="Phone Number" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" />
+	
+	<label for="password"><b>Password: </b></label>
+	<input id="password" ng-model="user.password" type="password"
+		placeholder="Password" required="required" />
+	
+	<label for="password-repeat"><b>Repeat Password: </b></label>
+	<input id="password-repeat" ng-model="user.password_repeat" type="password"
+		placeholder="Repeat Password" required="required" />
+	
+	<input type="button" value="Return" ng-click="goBack()" />
+	<input type="submit" value="Register" ng-click="register(user)" />
+</form>

@@ -1,0 +1,16 @@
+.service-outer {
+	padding: 2%;
+}
+
+.service {
+	padding: 10px;
+}
+
+.service:hover {
+	background-color: lightgray;
+	cursor: pointer;
+}
+
+.service * {
+	padding: 0 2%;
+}

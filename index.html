@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+
+<html lang="en" ng-app="App">
+	<head>
+		<meta charset="UTF-8" />
+		<title ng-bind="title"></title>
+		
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" href="css/common.css" />
+		<link rel="stylesheet" href="css/starRating.css" />
+		<link rel="stylesheet" ng-href="{{ css }}" ng-if="css" />
+
+		<!-- Non-minified provides useful debugging information -->
+		<!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-resource.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-leaflet-directive/0.10.0/angular-leaflet-directive.min.js"></script>-->
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-resource.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-leaflet-directive/0.10.0/angular-leaflet-directive.js"></script>
+		<!-- Leaflet files -->
+		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+			integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+			crossorigin=""/>
+		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+			integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+			crossorigin=""></script>
+		
+		<!-- Leaflet Routing Machine files -->
+		<link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+		<script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+
+	</head>
+	<body>
+		<div id="outer">
+			<div id="inner" class="floating">
+				<nav class="nav">
+					<div id="browser-name" ng-controller="BrowserNameController">
+						<strong ng-bind="browserName"></strong>
+					</div>
+					<search id="search" ng-if="currentUser"></search>
+					<img src="resources/Logo2.png" width="80" height="100"
+							class="d-inline-block align-top" alt="logo"/>
+					<div style="width: 100%; display: inline-block;">
+						<a href="#!/">Home</a>
+						<a href="#!/logout" ng-if="currentUser">Log Out</a>
+						<a href="#!/login" ng-if="!currentUser">Log In</a>
+						<a href="#!/signup" ng-if="!currentUser">Sign Up</a>
+						<a href="#!/aboutus">About Us</a>
+						<a href="#!/contactus">Contact Us</a>
+						<a href="#!/reviews">Reviews</a>
+						<a href="#!/cart" ng-if="currentUser">Shopping Cart</a>
+						<a href="#!/services">Services</a>
+						<a href="#!/database" ng-if="currentUser.id === 1">
+							Database
+						</a>
+					</div>
+				</nav>
+				<main id="content" ng-view=""></main>
+				<!--<footer id="browser-name" ng-controller="BrowserNameController"
+					ng-bind="browserName"></footer>-->
+			</div>
+		</div>
+		
+		<!-- preload all pages -->
+		<!--<script id="templates/home.html" type="text/ng-template"
+			src="templates/home.html"></script>
+		<script id="templates/aboutus.html" type="text/ng-template"
+			src="templates/aboutus.html"></script>-->
+		
+		<!-- load models -->
+		<script src="models/Address.js"></script>
+		<script src="models/Cart.js"></script>
+		<script src="models/Column.js"></script>
+		<script src="models/JoyRide.js"></script>
+		<script src="models/LatLng.js"></script>
+		<script src="models/LeafletCenter.js"></script>
+		<script src="models/Trip.js"></script>
+		
+		<!-- load custom directives -->
+		<script src="directives/search.js"></script>
+		<script src="directives/starRating.js"></script>
+		
+		<!-- load controllers -->
+		<script src="controllers/home.js"></script>
+		<script src="controllers/signup.js"></script>
+		<script src="controllers/login.js"></script>
+		<script src="controllers/logout.js"></script>
+		<script src="controllers/reviews.js"></script>
+		<script src="controllers/cart.js"></script>
+		<script src="controllers/checkedout.js"></script>
+		<script src="controllers/services/a.js"></script>
+		<script src="controllers/services/b.js"></script>
+		<script src="controllers/services/d.js"></script>
+		<script src="controllers/database.js"></script>
+		<script src="controllers/search.js"></script>
+		
+		<script>
+			var app = angular.module('App', [ 'ngRoute', 'ngResource',
+				'leaflet-directive' ]);
+			app.config(function ($routeProvider) {
+				$routeProvider.when('/', {
+					title: 'GQZ Travels',
+					templateUrl: 'templates/home.html',
+					controller: 'HomeController'
+				}).when('/signup', {
+					title: 'Sign Up - GQZ Travels',
+					css: 'css/signup.css',
+					templateUrl: 'templates/signup.html',
+					controller: 'SignUpController'
+				}).when('/logout', {
+					title: 'Logged Out - GQZ Travels',
+					templateUrl: 'templates/logout.html',
+					controller: 'LogOutController'
+				}).when('/login', {
+					title: 'Log In - GQZ Travels',
+					css: 'css/login.css',
+					templateUrl: 'templates/login.html',
+					controller: 'LogInController'
+				}).when('/aboutus', {
+					title: 'About Us - GQZ Travels',
+					templateUrl: 'templates/aboutus.html'/*,
+					controller: 'AboutusController'*/
+				}).when('/contactus', {
+					title: 'Contact Us - GQZ Travels',
+					templateUrl: 'templates/contactus.html'/*,
+					controller: 'ContactUsController'*/
+				}).when('/reviews', {
+					title: 'Reviews - GQZ Travels',
+					templateUrl: 'templates/reviews.html',
+					controller: 'ReviewsController'
+				}).when('/cart', {
+					title: 'Shopping Cart - GQZ Travels',
+					css: 'css/cart.css',
+					templateUrl: 'templates/cart.html',
+					controller: 'CartController'
+				}).when('/checkedout', {
+					title: 'Order Placed - GQZ Travels',
+					css: 'css/checkedout.css',
+					templateUrl: 'templates/checkedout.html',
+					controller: 'CheckedOutController'
+				}).when('/services', {
+					title: 'Services - GQZ Travels',
+					css: 'css/services.css',
+					templateUrl: 'templates/services.html'/*,
+					controller: 'ServicesController'*/
+				}).when('/services/a', {
+					title: 'Travel Service - GQZ Travels',
+					css: 'css/services/a.css',
+					templateUrl: 'templates/services/a.html',
+					controller: 'ServiceAController'
+				}).when('/services/b', {
+					title: 'Delivery Service - GQZ Travels',
+					css: 'css/services/b.css',
+					templateUrl: 'templates/services/b.html',
+					controller: 'ServiceBController'
+				}).when('/services/d', {
+					title: 'Luxury Travel Service - GQZ Travels',
+					css: 'css/services/d.css',
+					templateUrl: 'templates/services/d.html',
+					controller: 'ServiceDController'
+				}).when('/database', {
+					title: 'Database Maintenance - GQZ Travels',
+					css: 'css/database.css',
+					templateUrl: 'templates/database.html',
+					controller: 'DatabaseController'
+				}).when('/search', {
+					title: 'Search - GQZ Travels',
+					css: 'css/search.css',
+					templateUrl: 'templates/search.html',
+					controller: 'SearchController'
+				}).otherwise({ redirectTo: '/' });
+			});
+			/*app.factory('searchParameters', function () {
+				var query = '';
+				return {
+					getQuery: function () { return query; },
+					setQuery: function (q) { query = q; }
+				};
+			});*/
+			app.factory('searchParameters', function ($rootScope) {
+				return {
+					query: '',
+					subscribe: function (scope, callback) {
+						var handler = $rootScope.$on('search-change-event',
+							callback);
+						scope.$on('$destroy', handler);
+					},
+					notify: function () {
+						$rootScope.$emit('search-change-event');
+					}
+				};
+			});
+			
+			/*app.controller('NavController', [ '$scope', '$window',
+				function ($scope, $window) {
+				$scope.currentUser = function () {
+					return $window.sessionStorage['user'];
+				};
+			} ]);*/
+			/*app.controller('SearchController', [ '$scope', '$window',
+				function ($scope, $window) {
+				console.warn('reloaded');
+				$scope.query = '';
+				$scope.goToSearch = function () {
+					if ($scope.query) {
+						$window.location.href = '#!/search';
+					}
+				}
+			}]);*/
+			app.controller('BrowserNameController', function ($scope) {
+				const userAgent = navigator.userAgent;
+				if (userAgent.indexOf("Opera") > -1) {
+					$scope.browserName = "Opera Browser"
+				} else if (userAgent.indexOf("Firefox") > -1) {
+					$scope.browserName = "Firefox Browser";
+				} else if (userAgent.indexOf("Chrome") > -1) {
+					$scope.browserName = "Chrome Browser";
+				} else if (userAgent.indexOf("Safari") > -1) {
+					$scope.browserName = "Safari Browser";
+				} else {
+					$scope.browserName = "Unknown Browser"
+				}
+			});
+			app.controller('HomeController', [ '$scope', '$interval',
+				homeController ]);
+			app.controller('SignUpController', [ '$scope', '$http', '$window',
+				signupController ]);
+			app.controller('LogInController', [ '$scope', '$rootScope', '$http',
+				'$window', '$location', loginController ]);
+			app.controller('LogOutController', [ '$scope', '$rootScope', '$window',
+				logoutController ]);
+			app.controller('ReviewsController', [ '$scope', '$http',
+				reviewsController ]);
+			app.controller('CartController', [ '$scope', '$http', '$window',
+				cartController ]);
+			app.controller('CheckedOutController', [ '$scope', '$http', '$window',
+				'$location', checkedOutController ]);
+			app.controller('ServiceAController', [ '$scope', '$http', '$window',
+				'$filter', 'leafletData', serviceAController ]);
+			app.controller('ServiceBController', [ '$scope', '$http', '$window',
+				serviceBController ]);
+			app.controller('ServiceDController', [ '$scope', '$http', '$window',
+				serviceDController ]);
+			app.controller('DatabaseController', [ '$scope', '$http',
+				databaseController ]);
+			app.controller('SearchController', [ '$scope', '$http',
+				'searchParameters', searchController ]);
+			
+			app.directive('search', searchDirective);
+			app.directive('starRating', starRatingDirective);
+			
+			app.run([ '$rootScope', '$window', function ($rootScope, $window) {
+				if (!$rootScope.currentUser && $window.sessionStorage['user']) {
+					$rootScope.currentUser = JSON.parse($window.sessionStorage['user']);
+				}
+				$rootScope.$on('$routeChangeSuccess',
+					function (event, current, previous) {
+					$rootScope.title = current.$$route.title;
+					$rootScope.css = current.$$route.css;
+				});
+			} ]);
+		</script>
+
+	</body>
+</html>
+

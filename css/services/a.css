@@ -1,0 +1,32 @@
+.address-input {
+	display: table;
+}
+
+.address-input p {
+	display: table-row;
+}
+
+.address-input label, .address-input input {
+	/*padding: 1%;*/
+	margin: 1%;
+	display: table-cell;
+}
+
+#map {
+	/*width: 50%;
+	height: 40vh;*/
+	float: right;
+}
+
+table, td, th {
+	border: 1px solid black;
+	border-collapse: collapse;
+}
+
+td, th {
+	padding: 5px;
+}
+
+.number {
+	display: inline;
+}

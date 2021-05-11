@@ -1,0 +1,55 @@
+<h1>Database Maintenance</h1>
+<hr />
+<div id="tables">
+	<h2>Tables</h2>
+	<div ng-repeat="table in tables">
+		<a class="clickable" ng-click="setTable(table.name)">{{ table.name }}</a>
+		<br />
+		<br />
+	</div>
+</div>
+<div id="norows" ng-if="!table">
+	<p>Select a table to modify</p>
+</div>
+<div id="rows" ng-if="table">
+	<h2 ng-bind="table"></h2>
+	<form>
+		<div style="float: right;">
+			<label for="filter">Filter: </label>
+			<input id="filter" ng-model="search" type="text" />
+		</div>
+		<table ng-if="rows">
+			<tr>
+				<th>Modify</th>
+				<th ng-repeat="col in cols"><a href="" ng-bind="col.name"
+					ng-click="setSort(col.name)"></a></th>
+			</tr>
+			<tr>
+				<td><button type="button" ng-click="addRow(newRow)">Add</button></td>
+				<td ng-repeat="col in cols">
+					<div ng-if="col.name !== 'id'">
+						<label for="{{ col.name }}-new" class="hidden">{{ col.name }}</label>
+						<input id="{{ col.name }}-new" type="{{ col.type }}"
+							ng-model="newRow[col.name]" ng-required="col.required" />
+					</div>
+					<strong ng-if="col.name === 'id'">NEW</strong>
+				</td>
+			</tr>
+			<tr ng-repeat="row in rows | filter: search | orderBy: sortField: reverse">
+				<td>
+					<button type="button" ng-click="updateRow(row)">Update</button>
+					<button type="button" ng-click="deleteRow(row)">Delete</button>
+				</td>
+				<td ng-repeat="col in cols">
+					<div ng-if="col.name !== 'id'">
+						<label for="{{ col.name }}-{{ row.id }}" class="hidden">{{ col.name }}</label>
+						<input id="{{ col.name }}-{{ row.id }}" type="{{ col.type }}"
+							ng-model="row[col.name]" ng-value="row[col.name]"
+							ng-required="col.required" />
+					</div>
+					<p ng-if="col.name === 'id'" ng-bind="row[col.name]"></p>
+				</td>
+		</table>
+	</form>
+</div>
+

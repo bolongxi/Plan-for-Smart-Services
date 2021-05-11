@@ -1,0 +1,44 @@
+.store > * {
+	padding: 2vh 2vw;
+}
+
+.draggable {
+	cursor: grab;
+}
+
+.draggable:active {
+	background: lightgrey;
+	cursor: grabbing;
+}
+
+.noselect {
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+
+.centered {
+	text-align: center;
+}
+
+#overlay {
+	position: fixed;
+	width: min-content;
+	height: min-content;
+	right: 0;
+	bottom: 0;
+}
+
+#overlay img {
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	padding: 5%;
+}
+
+#cart {
+	width: 10vw;
+	height: auto;
+}

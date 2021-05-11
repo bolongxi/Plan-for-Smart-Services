@@ -1,0 +1,43 @@
+<div id="overlay">
+	<img id="cart" alt="shopping cart" src="resources/cart.png"
+		ondragover="angular.element(this).scope().allowDrop(event)"
+		ondrop="angular.element(this).scope().drop(event)" />
+</div>
+
+<div>
+	<h1>Online Shopping and Delivery Service</h1>
+	<h3>
+		Select products from your favourite stores and drag them to your cart
+	</h3>
+	<hr />
+	
+	<div id="store-container">
+		<div ng-repeat="store in stores">
+			<div class="floating store" ng-if="store.products.length > 0">
+				<h3>{{ store.storeName }}</h3>
+				<table class="centered" style="width: 100%;">
+					<tr>
+						<th>Description</th>
+						<th>Price</th>
+						<th>Drag to cart</th>
+					</tr>
+					<tr ng-repeat="product in store.products">
+						<td>{{ product.description }}</td>
+						<td>{{ product.price.toFixed(2) }}</td>
+						<td class="draggable noselect" draggable="true"
+							data-json="{{ product }}"
+							ondragstart="angular.element(this).scope().drag(event)">
+							Drag Me
+						</td>
+					</tr>
+				</table>
+			</div>
+			<br />
+		</div>
+	</div>
+	<div id="attribution" style="position: fixed; bottom: 0;">
+		Icons made by <a href="https://www.freepik.com" title="Freepik">
+		Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">
+		www.flaticon.com</a>
+	</div>
+</div>
